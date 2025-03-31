@@ -1,24 +1,25 @@
 import { useGrpcClient } from "@context/GrpcClientContext/useGrpcClient";
-import * as PingPongProto from "@grpc/services/pingpong_pb";
+//import { ClientTimeRequest } from "@grpc/services/pingpong_pb.js";
+// import * as proto from "@grpc/services/pingpong_pb.js";
+import { ClientTimeRequest } from "@proto/services/pingpong";
 
-const TimeSync = () => {
+const TimeSync: React.FC = () => {
   const client = useGrpcClient();
 
-  const handleClick = () => {
-    // const request = new ClientTimeRequest();
-    const request = new PingPongProto.ClientTimeRequest();
-    request.setClientEpochTime(Date.now());
+  const handleClick = async () => {
+    const request: ClientTimeRequest = {
+      clientEpochTime: BigInt(Date.now()),
+    };
 
-    client.getServerTime(request, {}, (err, res) => {
-      if (err) {
-        console.error("Error:", err);
-      } else {
-        console.log(`Server Time: ${res?.getServerEpochTime()}`);
-      }
-    });
+    try {
+      const response = await client.getServerTime(request);
+      console.log(`Server Time: ${response.response.serverEpochTime}`);
+    } catch (err) {
+      console.error("gRPC Error:", err);
+    }
   };
 
-  return <button onClick={handleClick}>Send Time</button>;
+  return <button onClick={handleClick}>Send Current Time</button>;
 };
 
 export default TimeSync;

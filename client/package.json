@@ -13,14 +13,19 @@
     "dev:full": "concurrently \"npm:dev\" \"npm run dev:grpc\""
   },
   "dependencies": {
+    "@protobuf-ts/grpc-transport": "^2.9.6",
+    "@protobuf-ts/grpcweb-transport": "^2.9.6",
+    "dotenv": "^16.4.7",
     "google-protobuf": "^3.21.4",
     "grpc-web": "^1.5.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "dotenv": "^16.4.7"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@protobuf-ts/plugin": "^2.9.6",
+    "@protobuf-ts/runtime": "^2.9.6",
+    "@types/node": "^22.13.14",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
@@ -31,7 +36,6 @@
     "globals": "^15.15.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0",
-    "@types/node": "^22.13.14"
+    "vite": "^6.2.0"
   }
 }

@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@context": path.resolve(__dirname, "./src/context"),
-      "@grpc": path.resolve(__dirname, "./src/grpc"),
+      "@proto": path.resolve(__dirname, "./src/proto"),
       "@components": path.resolve(__dirname, "./src/component"),
     },
   },

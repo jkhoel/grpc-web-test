@@ -1,25 +1,37 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useGrpcClient } from "@context/GrpcClientContext/useGrpcClient";
-import * as PingPongProto from "@grpc/services/pingpong_pb";
+import { PingRequest } from "@proto/services/pingpong";
 
-const PingStream = () => {
+const PingStream: React.FC = () => {
   const client = useGrpcClient();
 
   useEffect(() => {
-    const req = new PingPongProto.PingRequest();
-    req.setClientId("react-client-1");
+    const request: PingRequest = {
+      clientId: "react-client-1",
+    };
 
-    const stream = client.pingStream(req, {});
-    stream.on("data", (msg) => {
-      console.log(`Received: ${msg.getMessage()} @ ${msg.getTimestamp()}`);
+    const stream = client.pingStream(request);
+
+    const removeListener = stream.responses.onMessage((message) => {
+      console.log(
+        `📡 Ping from server: ${message.message} @ ${message.timestamp}`
+      );
     });
-    stream.on("error", (err) => console.error("Stream error:", err));
-    stream.on("end", () => console.log("Stream ended."));
 
-    return () => stream.cancel();
+    stream.responses.onError((err) => {
+      console.error("❌ Stream error:", err);
+    });
+
+    stream.responses.onComplete(() => {
+      console.log("✅ Stream completed");
+    });
+
+    return () => {
+      removeListener();
+    };
   }, [client]);
 
-  return <div>Listening for server pings...</div>;
+  return <div>Listening for pings from server...</div>;
 };
 
 export default PingStream;

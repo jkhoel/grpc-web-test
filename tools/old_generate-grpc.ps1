@@ -1,5 +1,5 @@
 ﻿$PROTO_DIR = "../contracts"
-$CLIENT_OUT = "../client/src/proto"
+$CLIENT_OUT = "../client/src/grpc"
 $SKIP_CLEAN = $false
 
 $PROTO_DIR_FULL = Resolve-Path $PROTO_DIR | Select-Object -ExpandProperty Path
@@ -20,24 +20,21 @@ if (-not $SKIP_CLEAN) {
 
 New-Item -ItemType Directory -Path $CLIENT_OUT -Force | Out-Null
 
-# Get relative .proto file paths for protoc
 $protoFiles = Get-ChildItem -Path $PROTO_DIR -Recurse -Filter *.proto | ForEach-Object {
     $relativePath = $_.FullName.Substring($PROTO_DIR_FULL.Length + 1) -replace '\\', '/'
     $relativePath
 }
 
-# Resolve plugin path on Windows
-$pluginPath = Resolve-Path "../client/node_modules/.bin/protoc-gen-ts.cmd" | Select-Object -ExpandProperty Path
-
-# Build argument array
+# Build the argument array
 $arguments = @()
 $arguments += "-I$PROTO_DIR"
 $arguments += $protoFiles
-$arguments += "--plugin=protoc-gen-ts=$pluginPath"
-$arguments += "--ts_out=$CLIENT_OUT"
+$arguments += "--js_out=import_style=commonjs,binary:$CLIENT_OUT"
+$arguments += "--grpc-web_out=import_style=typescript,mode=grpcwebtext:$CLIENT_OUT"
 
-Write-Host "🔧 Running protoc with protobuf-ts plugin..."
+# Run protoc with clean argument array
+Write-Host "🔧 Running protoc..."
 & protoc @arguments
 
 Write-Host ""
-Write-Host " >> protobuf-ts client code generation complete."
+Write-Host "✅ gRPC-Web client code generation complete."

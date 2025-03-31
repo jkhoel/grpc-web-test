@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROTO_DIR="../contracts"
-CLIENT_OUT="../client/src/grpc"
+CLIENT_OUT="../client/src/proto"
 SKIP_CLEAN=false
 
 for arg in "$@"; do
@@ -17,13 +17,12 @@ fi
 
 mkdir -p "$CLIENT_OUT"
 
-find "$PROTO_DIR" -name "*.proto" | while read -r file; do
-  echo "🔧 Generating gRPC-Web client for: $file"
-  protoc -I=../contracts \
-    $(find ../contracts -name "*.proto") \
-    --js_out=import_style=es6:"$CLIENT_OUT" \
-    --grpc-web_out=import_style=typescript,mode=grpcwebtext:"$CLIENT_OUT"
-done
+echo "🔧 Generating protobuf-ts clients..."
+
+protoc -I="$PROTO_DIR" \
+  $(find "$PROTO_DIR" -name "*.proto") \
+  --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
+  --ts_out="$CLIENT_OUT"
 
 echo ""
-echo "✅ gRPC-Web client code generation complete."
+echo "✅ protobuf-ts client code generation complete."

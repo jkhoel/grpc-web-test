@@ -51,7 +51,7 @@ Both use the generate-grpc scripts found in the `tools` folder, and cleans all p
 ```bash
 ./generate-grpc.sh --no-clean
 ./generate-grpc.ps1 -NoClean
-
+```
 
 #### Environment Variables
 

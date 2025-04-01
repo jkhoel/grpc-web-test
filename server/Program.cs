@@ -3,13 +3,12 @@ using Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🧠 Explicitly bind to http://localhost:7153
-
+//  Explicitly bind to localhost:7153 for both HTTP/2 (native) and HTTP/1.1 (gRPC-Web)
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenLocalhost(7153, o =>
     {
-        o.UseHttps(); // 🔐 Enable HTTPS
+        o.UseHttps();
         o.Protocols = HttpProtocols.Http1AndHttp2;
     });
 });
@@ -34,7 +33,6 @@ app.UseGrpcWeb();
 // Configure the HTTP request pipeline.
 app.MapGrpcService<GreeterService>();
 app.MapGrpcService<PingPongService>().EnableGrpcWeb().RequireCors(); // Remember, middleware order matters!
-
 
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 

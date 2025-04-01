@@ -5,7 +5,9 @@ package proto.services.pingpong;
 
 service PingPongService {
   rpc GetServerTime (ClientTimeRequest) returns (ServerTimeResponse);
+  
   rpc PingStream (PingRequest) returns (stream PingMessage);
+  rpc BidirectionalPingStream (stream PingMessage) returns (stream PingMessage);
 }
 
 message ClientTimeRequest {

@@ -3,12 +3,14 @@ using Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🧠 Explicitly bind to http://localhost:5153
+// 🧠 Explicitly bind to http://localhost:7153
+
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5153, o =>
+    options.ListenLocalhost(7153, o =>
     {
-        o.Protocols = HttpProtocols.Http1AndHttp2; // Required for gRPC-Web
+        o.UseHttps(); // 🔐 Enable HTTPS
+        o.Protocols = HttpProtocols.Http1AndHttp2;
     });
 });
 

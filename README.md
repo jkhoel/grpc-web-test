@@ -56,3 +56,20 @@ Both use the generate-grpc scripts found in the `tools` folder, and cleans all p
 #### Environment Variables
 
 Look at the example `.env.development` file for required environment variables. In a production environment, these variables should be put into a `.env.production` file instead.
+
+## Server
+
+There is missing HTTP/2 Support in gRPC-Web Without HTTPS. .NET’s gRPC-Web middleware requires either:
+
+- HTTP/2 over HTTPS, or
+- HTTP/1.1 with specific trailers-flush settings
+
+When using HttpProtocols.Http1AndHttp2 over plain HTTP, and serving gRPC-Web, the browser may never flush streamed responses unless the response includes trailers and correctly terminates each message. However, gRPC-Web streaming does work properly when using HTTPS. This means the easist way to get the server and client to work together is to use HTTPS!
+
+Most likely this means you need to accept the Dev Certificates (one-time setup):
+
+```bash
+dotnet dev-certs https --trust
+```
+
+This will prompt you to trust the certificate. Accept it and then run the server. The client should now be able to communicate with the server.

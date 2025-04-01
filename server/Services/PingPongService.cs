@@ -20,7 +20,7 @@ public class PingPongService : Proto.Services.PingPongService.PingPongServiceBas
     {
         var rand = new Random();
         Console.WriteLine($"Client {request.ClientId} connected");
-
+    
         while (!context.CancellationToken.IsCancellationRequested)
         {
             var msg = new PingMessage
@@ -32,7 +32,7 @@ public class PingPongService : Proto.Services.PingPongService.PingPongServiceBas
             await responseStream.WriteAsync(msg);
             await Task.Delay(rand.Next(500, 2000));
         }
-
+    
         Console.WriteLine($"Client {request.ClientId} disconnected");
     }
 }

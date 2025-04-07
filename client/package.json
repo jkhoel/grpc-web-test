@@ -6,11 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:protos": "node ./tools/build.protos.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate:grpc": "node ../tools/run-generator.js",
-    "dev:grpc": "node ../tools/watch-protos.js",
-    "dev:full": "concurrently \"npm:dev\" \"npm run dev:grpc\""
+    "watch:protos": "nodemon --watch ../contracts --ext proto --exec \"node ./tools/build.protos.js\"",
+    "watch:dev": "concurrently \"npm:dev\" \"npm run watch:protos\""
   },
   "dependencies": {
     "@protobuf-ts/grpc-transport": "^2.9.6",
@@ -34,6 +34,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "nodemon": "^3.1.9",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"

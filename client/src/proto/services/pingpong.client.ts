@@ -4,6 +4,7 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { PingPongService } from "./pingpong";
+import type { DuplexStreamingCall } from "@protobuf-ts/runtime-rpc";
 import type { PingMessage } from "./pingpong";
 import type { PingRequest } from "./pingpong";
 import type { ServerStreamingCall } from "@protobuf-ts/runtime-rpc";
@@ -24,6 +25,10 @@ export interface IPingPongServiceClient {
      * @generated from protobuf rpc: PingStream(proto.services.pingpong.PingRequest) returns (stream proto.services.pingpong.PingMessage);
      */
     pingStream(input: PingRequest, options?: RpcOptions): ServerStreamingCall<PingRequest, PingMessage>;
+    /**
+     * @generated from protobuf rpc: BidirectionalPingStream(stream proto.services.pingpong.PingMessage) returns (stream proto.services.pingpong.PingMessage);
+     */
+    bidirectionalPingStream(options?: RpcOptions): DuplexStreamingCall<PingMessage, PingMessage>;
 }
 /**
  * @generated from protobuf service proto.services.pingpong.PingPongService
@@ -47,5 +52,12 @@ export class PingPongServiceClient implements IPingPongServiceClient, ServiceInf
     pingStream(input: PingRequest, options?: RpcOptions): ServerStreamingCall<PingRequest, PingMessage> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<PingRequest, PingMessage>("serverStreaming", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: BidirectionalPingStream(stream proto.services.pingpong.PingMessage) returns (stream proto.services.pingpong.PingMessage);
+     */
+    bidirectionalPingStream(options?: RpcOptions): DuplexStreamingCall<PingMessage, PingMessage> {
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        return stackIntercept<PingMessage, PingMessage>("duplex", this._transport, method, opt);
     }
 }

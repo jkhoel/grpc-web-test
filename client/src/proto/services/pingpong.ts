@@ -252,5 +252,6 @@ export const PingMessage = new PingMessage$Type();
  */
 export const PingPongService = new ServiceType("proto.services.pingpong.PingPongService", [
     { name: "GetServerTime", options: {}, I: ClientTimeRequest, O: ServerTimeResponse },
-    { name: "PingStream", serverStreaming: true, options: {}, I: PingRequest, O: PingMessage }
+    { name: "PingStream", serverStreaming: true, options: {}, I: PingRequest, O: PingMessage },
+    { name: "BidirectionalPingStream", serverStreaming: true, clientStreaming: true, options: {}, I: PingMessage, O: PingMessage }
 ]);

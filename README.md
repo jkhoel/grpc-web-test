@@ -20,7 +20,7 @@ The client has a couple of extra commands to generate the gRPC client code from 
 ```bash
 # protoc is required to generate the client code
 sudo apt  install protobuf-compiler # Ubuntu or similar
-npm install -g protoc # If on Windows, and this can also be done if the above command is not available on Unix/MacOS
+npm install -g protoc               # If on Windows, and this can also be done if the above command is not available on Unix/MacOS
 ```
 
 Verify by running the command `protoc --version`. If the command is not found, then add the path to the protoc binary to the PATH environment variable.
@@ -36,22 +36,24 @@ npm install -g protoc-gen-grpc-web
 Generating the proto definition files is done by running the following command:
 
 ```bash
-npm run generate:grpc
+npm run build:protos
 ```
 
 Additionally, we can watch the proto file for changes and automatically generate the client code by running one of the following commands:
 
 ```bash
-npm run dev:grpc # starts a process to only watch for changes the proto files
-npm run dev:full # starts both the vite server and the grpc watch process
+npm run watch:protos    # starts a process to only watch for changes the proto files
+npm run watch:dev       # starts both the vite server and the grpc watch process
 ```
 
-Both use the generate-grpc scripts found in the `tools` folder, and cleans all previously generated code before generating new code. If this is not wanted, then use the no-clean flags:
+At a minimum, to get the development enviroment running you need to run the following command:
 
 ```bash
-./generate-grpc.sh --no-clean
-./generate-grpc.ps1 -NoClean
+npm run build:protos
+npm run dev
 ```
+
+This will build the proto definitions and start the vite server and open the app in your default browser. The app should be running on `http://localhost:5173`.
 
 #### Environment Variables
 
